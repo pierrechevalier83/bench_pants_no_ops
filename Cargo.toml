@@ -1,0 +1,15 @@
+[package]
+name = "bench_pants_no_ops"
+version = "0.1.0"
+authors = ["Pierre Chevalier <pchevalier@twitter.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+criterion = "0.3.1"
+git2 = "0.11.0"
+
+[[bench]]
+name = "bench_pants_no_ops"
+harness = false
