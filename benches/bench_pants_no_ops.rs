@@ -33,15 +33,34 @@ impl Drop for InMiniRepo {
 }
 
 impl InMiniRepo {
-    fn run_pants(&self, args: &[&str]) -> Result<process::Output, std::io::Error> {
+    fn run_pants(args: &[&str]) -> Result<process::Output, std::io::Error> {
         process::Command::new("./pants").args(args).output()
+    }
+    fn run_pants_pex(args: &[&str]) -> Result<process::Output, std::io::Error> {
+        process::Command::new("./pants-1.24.0rc1-git2481dab2-md59a1c1708.pex").args(args).output()
+
     }
 }
 
 pub fn criterion_benchmark(c: &mut Criterion) {
-    let in_mini_repo = InMiniRepo::default();
-    c.bench_function("./pants goals", move |b| {
-        b.iter(|| in_mini_repo.run_pants(&["goals"]).unwrap())
+    let _guard = InMiniRepo::default();
+    c.bench_function("version", |b| {
+        b.iter(|| InMiniRepo::run_pants(&["version"]).unwrap())
+    });
+    c.bench_function("version (pex)", |b| {
+        b.iter(|| InMiniRepo::run_pants_pex(&["version"]).unwrap())
+    });
+    c.bench_function("goals", |b| {
+        b.iter(|| InMiniRepo::run_pants(&["goals"]).unwrap())
+    });
+    c.bench_function("help", |b| {
+        b.iter(|| InMiniRepo::run_pants(&["help"]).unwrap())
+    });
+    c.bench_function("binary (v2)", |b| {
+        b.iter(|| InMiniRepo::run_pants(&["binary", "hello:", "--v2", "--no-v1"]).unwrap())
+    });
+    c.bench_function("binary (v1)", |b| {
+        b.iter(|| InMiniRepo::run_pants(&["binary", "hello:"]).unwrap())
     });
 }
 
