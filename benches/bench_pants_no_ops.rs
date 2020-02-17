@@ -7,7 +7,7 @@ use std::{
 };
 
 const TEMP_DIR: &'static str = "/tmp/minirepo";
-const MINIREPO_REMOTE: &'static str = "/Users/pchevalier/Documents/code/minirepo";
+const MINIREPO_REMOTE: &'static str = "https://github.com/pierrechevalier83/minirepo.git";
 
 struct InMiniRepo {
     old_dir: PathBuf,
